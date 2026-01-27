@@ -30,23 +30,38 @@ Jupyter Notebook for experiments and visualization
 
 # 📁 Code Structure
 DRL_SLA_Task_Scheduler/
+
 │
 ├── env.py        # Edge–cloud environment and workload simulation
+
 ├── model.py      # DRL model (Conv1D–GRU network architecture)
+
 ├── train.py      # Training logic for the DRL agent
+
 ├── test.py       # Testing and evaluation script
+
 ├── utils.py      # Utility functions (config, logging, metrics)
+
 │
 ├── DRL_SLA_Task_Scheduler_Notebook.ipynb  
+
 │                 # Notebook for:
+
 │                 # - Running experiments
+
 │                 # - Showing outputs
+
 │                 # - Graphs and results
+
 │                 # - Step-by-step explanation
+
 │                 # - Paper figures
+
 │
 ├── requirements.txt   # Python dependencies
+
 └── README.md          # Project documentation
+
 
 # ⚙️ Usage
 
