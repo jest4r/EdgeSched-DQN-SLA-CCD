@@ -45,20 +45,14 @@ DRL_SLA_Task_Scheduler/
 │
 ├── DRL_SLA_Task_Scheduler_Notebook.ipynb  
 
-│                 # Notebook for:
+# Notebook for:
 
 │                 # - Running experiments
-
 │                 # - Showing outputs
-
 │                 # - Graphs and results
-
 │                 # - Step-by-step explanation
-
 │                 # - Paper figures
 
-│
-├── requirements.txt   # Python dependencies
 
 └── README.md          # Project documentation
 
