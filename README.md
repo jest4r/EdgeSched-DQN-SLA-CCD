@@ -22,11 +22,17 @@ safe scheduling decisions.
 # Code Structure
 DRL_SLA_Task_Scheduler_PY/
 │── env/ # Edge–cloud environment and workload simulation
+
 │── agent/ # DRL agent (Conv1D–GRU policy, training logic)
+
 │── reward/ # SLA-aware reward and SVRS computation
+
 │── scheduler/ # Task scheduling and action pruning logic
+
 │── utils/ # Configuration, logging, metrics
+
 │── main.py # Entry point for training and evaluation
+
 │── requirements.txt # Python dependencies
 
 # Usage
