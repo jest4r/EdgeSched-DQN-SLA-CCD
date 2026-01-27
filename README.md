@@ -1,9 +1,14 @@
-### EdgeSched-DQN-SLA
-# “SLA-Aware Deep Reinforcement Learning for Adaptive Edge–Cloud Task Scheduling.”
+# SLA-Aware DRL Task Scheduler for Edge–Cloud Environments
+This repository provides the Python implementation of the framework proposed in the paper
+“SLA-Aware Deep Reinforcement Learning for Adaptive Edge–Cloud Task Scheduling.”
 
-The project implements an SLA-aware, risk-sensitive Deep Reinforcement Learning (DRL) scheduler for dynamic task allocation in edge–cloud environments. The scheduling problem is formulated as a sequential decision-making process where an agent learns to minimise SLA violations while optimising latency, task completion rate, and energy efficiency.
-
-A key contribution is the integration of an explicit SLA Violation Risk Score (SVRS) into the DRL state and reward design, enabling proactive and safe scheduling decisions.
+# Overview
+The code implements an SLA-aware, risk-sensitive deep reinforcement learning (DRL) scheduler for
+dynamic task allocation in edge–cloud environments. The scheduling problem is formulated as a
+sequential decision-making process, where the agent learns to minimise SLA violations while
+optimising latency, task completion, and energy efficiency. A key contribution is the integration of an
+explicit SLA Violation Risk Score (SVRS) into the DRL state and reward design, enabling proactive and
+safe scheduling decisions.
 
 # 🔹 Key Features
 
