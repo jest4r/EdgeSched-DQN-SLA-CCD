@@ -1,31 +1,34 @@
-EdgeSched-DQN-SLA
-SLA-Aware DRL Task Scheduler for Edge–Cloud Environments
-
-This repository provides the Python implementation of the framework proposed in the paper:
-
-“SLA-Aware Deep Reinforcement Learning for Adaptive Edge–Cloud Task Scheduling.”
+### EdgeSched-DQN-SLA
+# “SLA-Aware Deep Reinforcement Learning for Adaptive Edge–Cloud Task Scheduling.”
 
 The project implements an SLA-aware, risk-sensitive Deep Reinforcement Learning (DRL) scheduler for dynamic task allocation in edge–cloud environments. The scheduling problem is formulated as a sequential decision-making process where an agent learns to minimise SLA violations while optimising latency, task completion rate, and energy efficiency.
 
 A key contribution is the integration of an explicit SLA Violation Risk Score (SVRS) into the DRL state and reward design, enabling proactive and safe scheduling decisions.
 
-🔹 Key Features
+# 🔹 Key Features
 
 SLA Violation Risk Score (SVRS)–based state representation
 
+
 Tier-aware SLA handling (Gold / Silver / Bronze tasks)
+
 
 Hybrid Conv1D–GRU DRL architecture
 
+
 SLA-aware reward shaping and action pruning
+
 
 Closed-loop feedback using runtime SLA monitoring
 
+
 Simulation-based and reproducible evaluation
+
 
 Jupyter Notebook for experiments and visualization
 
-📁 Code Structure
+
+# 📁 Code Structure
 DRL_SLA_Task_Scheduler/
 │
 ├── env.py        # Edge–cloud environment and workload simulation
@@ -45,17 +48,15 @@ DRL_SLA_Task_Scheduler/
 ├── requirements.txt   # Python dependencies
 └── README.md          # Project documentation
 
-⚙️ Usage
-1. Install dependencies
-pip install -r requirements.txt
+# ⚙️ Usage
 
-2. Train the model
+1. Train the model
 python train.py
 
-3. Test / evaluate the trained model
+2. Test / evaluate the trained model
 python test.py
 
-4. Run experiments and visualize results
+3. Run experiments and visualize results
 
 Open the notebook:
 
@@ -74,7 +75,8 @@ Step-by-step explanation
 
 Generating figures for the research paper
 
-🧪 Simulation Scope
+
+# 🧪 Simulation Scope
 
 All results are obtained using a high-fidelity simulation environment as described in the paper.
 The simulation models:
@@ -89,7 +91,8 @@ Dynamic task arrivals
 
 Real-world deployment and testbed validation are considered future work.
 
-📌 Configuration
+
+# 📌 Configuration
 
 Simulation parameters such as:
 
