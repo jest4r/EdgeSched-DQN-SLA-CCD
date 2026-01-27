@@ -1,0 +1,7 @@
+numpy
+gym
+torch
+matplotlib
+jupyter
+ipython
+tqdm
