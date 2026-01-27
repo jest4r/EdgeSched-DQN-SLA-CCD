@@ -53,9 +53,13 @@ DRL_SLA_Task_Scheduler/
 # Notebook for:
 
 │                 # - Running experiments
+
 │                 # - Showing outputs
+
 │                 # - Graphs and results
+
 │                 # - Step-by-step explanation
+
 │                 # - Paper figures
 
 
@@ -89,35 +93,10 @@ Step-by-step explanation
 
 Generating figures for the research paper
 
+# Evaluation Scope
+All results are obtained via high-fidelity simulation, as described in the paper. Real-world
+deployment and testbed validation are considered future work.
 
-# 🧪 Simulation Scope
+# Reference
+If you use this code, please cite the corresponding research paper.
 
-All results are obtained using a high-fidelity simulation environment as described in the paper.
-The simulation models:
-
-Edge–cloud nodes
-
-Heterogeneous task workloads
-
-SLA constraints (deadline, energy, priority tiers)
-
-Dynamic task arrivals
-
-Real-world deployment and testbed validation are considered future work.
-
-
-# 📌 Configuration
-
-Simulation parameters such as:
-
-Workload intensity
-
-SLA thresholds
-
-Service tiers (Gold/Silver/Bronze)
-
-Training hyperparameters
-
-can be modified in:
-
-utils.py / config section (if defined)
