@@ -64,6 +64,8 @@ DRL_SLA_Task_Scheduler/
 
 
 └── README.md          # Project documentation
+└── requirements.txt          # Required packages
+
 
 
 # ⚙️ Usage
