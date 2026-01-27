@@ -9,14 +9,17 @@ sequential decision-making process, where the agent learns to minimise SLA viola
 optimising latency, task completion, and energy efficiency. A key contribution is the integration of an
 explicit SLA Violation Risk Score (SVRS) into the DRL state and reward design, enabling proactive and
 safe scheduling decisions.
-Key Features
+
+# Key Features
  SLA Violation Risk Score (SVRS)–based state representation
  Tier-aware SLA handling (e.g., Gold/Silver/Bronze tasks)
  Hybrid Conv1D–GRU DRL architecture
  SLA-aware reward shaping and action pruning
  Closed-loop feedback using runtime SLA monitoring
  Simulation-based, reproducible evaluation
-Code Structure
+
+
+# Code Structure
 DRL_SLA_Task_Scheduler_PY/
 │── env/ # Edge–cloud environment and workload simulation
 │── agent/ # DRL agent (Conv1D–GRU policy, training logic)
@@ -25,7 +28,8 @@ DRL_SLA_Task_Scheduler_PY/
 │── utils/ # Configuration, logging, metrics
 │── main.py # Entry point for training and evaluation
 │── requirements.txt # Python dependencies
-Usage
+
+# Usage
 1. Install dependencies:
 pip install -r requirements.txt
 2. Run training or evaluation:
