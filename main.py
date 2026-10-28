@@ -15,7 +15,7 @@ NUM_CLOUD_NODES = 1
 MAX_QUEUE_LENGTH = 100
 TASK_TYPES = ['lightweight', 'moderate', 'heavy']
 SLA_TIERS = ['gold', 'silver', 'bronze']
-STATE_DIM = 15  # Based on your state representation in Eq. 2
+STATE_DIM = (NUM_EDGE_NODES + NUM_CLOUD_NODES) * 3 + 4
 
 class Task:
     def __init__(self, task_type: str, sla_tier: str):
@@ -145,18 +145,21 @@ class Node:
         return min(max(svrs, 0.0), 1.0)  # Clamp between 0 and 1
 
 class TaskSchedulingEnv:
-    def __init__(self):
+    def __init__(self, episode_length: int = 500, time_step: float = 100.0,
+                 task_arrival_rate: float = 10.0):
         self.edge_nodes = [Node('edge', i) for i in range(NUM_EDGE_NODES)]
         self.cloud_nodes = [Node('cloud', i) for i in range(NUM_CLOUD_NODES)]
         self.all_nodes = self.edge_nodes + self.cloud_nodes
         self.current_time = 0.0
-        self.time_step = 1.0  # ms
+        self.time_step = time_step  # ms
+        self.step_count = 0
         self.task_counter = 0
+        self.generated_tasks = []
         self.completed_tasks = []
         self.violated_tasks = []
         self.total_reward = 0.0
-        self.episode_length = 500  # Number of time steps per episode
-        self.task_arrival_rate = 10  # Tasks per second (Poisson process)
+        self.episode_length = episode_length  # Number of time steps per episode
+        self.task_arrival_rate = task_arrival_rate  # Tasks per second
         self.current_task = None  # Track the current task being scheduled
         
         # SLA reward weights from your paper (λ1, λ2, λ3)
@@ -172,7 +175,9 @@ class TaskSchedulingEnv:
         self.cloud_nodes = [Node('cloud', i) for i in range(NUM_CLOUD_NODES)]
         self.all_nodes = self.edge_nodes + self.cloud_nodes
         self.current_time = 0.0
+        self.step_count = 0
         self.task_counter = 0
+        self.generated_tasks = []
         self.completed_tasks = []
         self.violated_tasks = []
         self.total_reward = 0.0
@@ -204,13 +209,19 @@ class TaskSchedulingEnv:
         else:
             state.extend([0.0, 0.0, 0.0, 0.0])
         
-        return np.array(state, dtype=np.float32)
+        result = np.array(state, dtype=np.float32)
+        if result.size != STATE_DIM:
+            raise RuntimeError(f"State dimension mismatch: expected {STATE_DIM}, got {result.size}")
+        return result
         
     def _generate_task(self) -> Task:
         """Generate a new task with random type and SLA tier"""
         task_type = random.choice(TASK_TYPES)
         sla_tier = random.choice(SLA_TIERS)
-        return Task(task_type, sla_tier)
+        task = Task(task_type, sla_tier)
+        self.task_counter += 1
+        self.generated_tasks.append(task)
+        return task
         
     def _calculate_reward(self, task: Task) -> float:
         """Calculate tiered reward based on SLA compliance (Eq. 4-5 in your paper)"""
@@ -243,19 +254,22 @@ class TaskSchedulingEnv:
         
     def step(self, action: int) -> Tuple[np.ndarray, float, bool, dict]:
         """Execute one time step in the environment"""
-        # Process node queues
+        # Process node queues.
+        completed_this_step = []
         for node in self.all_nodes:
             completed = node.process_tasks(self.current_time)
+            completed_this_step.extend(completed)
             self.completed_tasks.extend(completed)
             
             # Check for SLA violations
             for task in completed:
                 if (task.completion_time - task.start_time > task.deadline) or \
                    (task.energy_used > task.energy_budget):
-                    self.violated_tasks.append(task)
+                    if task not in self.violated_tasks:
+                        self.violated_tasks.append(task)
                     
         # Generate new tasks (Poisson process)
-        num_new_tasks = np.random.poisson(self.task_arrival_rate * (self.time_step / 1000))
+        num_new_tasks = np.random.poisson(self.task_arrival_rate * (self.time_step / 1000.0))
         new_tasks = [self._generate_task() for _ in range(num_new_tasks)]
         
         # Assign tasks based on action
@@ -266,28 +280,34 @@ class TaskSchedulingEnv:
                 self.current_task = task  # Track current task for state representation
                 if not selected_node.add_task(task):
                     # If queue is full, task is dropped (count as violation)
-                    self.violated_tasks.append(task)
+                    if task not in self.violated_tasks:
+                        self.violated_tasks.append(task)
         
         # Calculate reward based on completed tasks
         reward = 0.0
-        for task in self.completed_tasks[-num_new_tasks:]:  # Only consider newly completed tasks
+        for task in completed_this_step:
             reward += self._calculate_reward(task)
             
         self.total_reward += reward
         
         # Update time
         self.current_time += self.time_step
+        self.step_count += 1
         
         # Check if episode is done
-        done = self.current_time >= self.episode_length
+        done = self.step_count >= self.episode_length
         
         # Get next state
         next_state = self._get_state()
         
         # Info dictionary
         info = {
+            'tasks_generated': len(self.generated_tasks),
             'tasks_completed': len(self.completed_tasks),
+            'tasks_violated': len(self.violated_tasks),
             'violations': len(self.violated_tasks),
+            'violation_rate': len(self.violated_tasks) / max(len(self.generated_tasks), 1),
+            'completion_rate': len(self.completed_tasks) / max(len(self.generated_tasks), 1),
             'avg_latency': np.mean([t.completion_time - t.start_time for t in self.completed_tasks]) if self.completed_tasks else 0.0,
             'avg_energy': np.mean([t.energy_used for t in self.completed_tasks]) if self.completed_tasks else 0.0
         }

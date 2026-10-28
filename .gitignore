@@ -1,0 +1,5 @@
+__pycache__/
+*.py[cod]
+*.pth
+paper_benchmark_figure.png
+paper_simulation_report.md

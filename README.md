@@ -83,6 +83,19 @@ Open the notebook:
 
 DRL_SLA_Task_Scheduler_Notebook.ipynb
 
+## Reproducible benchmark
+
+The paper-aligned benchmark uses the custom simulator in `main.py`. It fixes the state dimension, episode timing, task accounting, and task-based SLA metrics before comparing FIFO, Round Robin, EAG, DRL-NSLA, and SLA-DRL.
+
+Run locally or in Google Colab:
+
+```bash
+python paper_simulation.py
+python paper_figure_generator.py
+```
+
+In Colab, clone the repository, install the requirements, and run the same commands with `!python`. The generated report and figure are intentionally ignored by Git because they are run-specific artifacts.
+
 
 This notebook is used for:
 
